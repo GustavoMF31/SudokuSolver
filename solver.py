@@ -26,8 +26,13 @@ class SudokuBoard:
                     f"""A Sudoku needs a combination of
                     numbers or 'None's totalizing 9 per row,
                     but got {len(row)} in row {row} at index {index}""")
-        
+
         self.rows = rows
+        self.subgrids = self.generate_subgrids()
+        self.cols = self.generate_cols()
+        
+        if self.is_valid() != True:
+            raise InvalidSudokuException("A Sudoku can't have 2 equal numbers on the same row, columns or subgrid")
 
     def is_complete(self):
         #True if the sudoku is completely filled with numbers
@@ -37,6 +42,27 @@ class SudokuBoard:
             for number in row:
                 if number is None:
                     return False
+        return True
+
+    def is_valid(self):
+        #Checks if there are no repeated numbers
+        #In the same row, column or subgrid
+        
+        for row in self.rows:
+            for integer in INTEGERS:
+                if row.count(integer) > 1:
+                    return False
+
+        for col in self.cols:
+            for integer in INTEGERS:
+                if col.count(integer) > 1:
+                    return False
+
+        for subgrid in self.subgrids:
+            for integer in INTEGERS:
+                if subgrid.count(integer) > 1:
+                    return False
+
         return True
 
     @staticmethod
@@ -58,7 +84,7 @@ class SudokuBoard:
 
         return subgrids
     
-    def subgrids(self):
+    def generate_subgrids(self):
         #Returns the board, reorganized into 3x3 subgrids
         subgrids = []
 
@@ -74,7 +100,7 @@ class SudokuBoard:
         
         return subgrids
 
-    def cols(self):
+    def generate_cols(self):
         #Returns the board, reorganized into columns
         cols = [[],[],[],[],[],[],[],[],[]]
         
@@ -92,12 +118,12 @@ class SudokuBoard:
                 if row.count(integer) != 1:
                     return False
 
-        for col in self.cols():
+        for col in self.cols:
             for integer in INTEGERS:
                 if col.count(integer) != 1:
                     return False
 
-        for subgrid in self.subgrids():
+        for subgrid in self.subgrids:
             for integer in INTEGERS:
                 if subgrid.count(integer) != 1:
                     return False
@@ -116,9 +142,9 @@ class SudokuBoard:
             #Not in the row
             if (num not in self.rows[y] and
                    #Not in  the column
-                   num not in self.cols()[x] and
+                   num not in self.cols[x] and
                    #Not in the subgrid
-                   num not in self.subgrids()[x // 3 + (y // 3) * 3]):
+                   num not in self.subgrids[x // 3 + (y // 3) * 3]):
                    
                 possible_numbers.append(num)
 
