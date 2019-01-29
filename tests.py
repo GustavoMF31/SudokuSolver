@@ -15,6 +15,20 @@ def test_exceptions():
         SudokuBoard.subgridize([[],[]])
     except Exception as e:
         assert type(e) == ValueError
+
+    try:
+        SudokuBoard([[1,1,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None],
+                            [None,None,None,None,None,None,None,None,None]]
+                            )
+    except Exception as e:
+        assert type(e) == InvalidSudokuException
         
     print("Passed exceptions test")
 
@@ -38,7 +52,7 @@ def test_simple_sudoku():
                      [None,None,4,     6,   9,   None,  1,   7,   3   ],
                      [None,None,None,  None,None,1,     None,None,4   ]])
     
-    assert s.subgrids() == [[8, 7, 6, None, 1, None, None, 4, None],
+    assert s.subgrids == [[8, 7, 6, None, 1, None, None, 4, None],
                             [9, None, None, None, None, 6, 3, None, 5],
                             [None, None, None, None, None, None, 8, None, None],
                             [4, None, None, None, 9, None, None, 5, None],
@@ -48,7 +62,7 @@ def test_simple_sudoku():
                             [None, None, None, 6, 9, None, None, None, 1],
                             [None, None, 8, 1, 7, 3, None, None, 4]]
 
-    assert s.cols() == [[8, None, None, 4, None, None, None, None, None],
+    assert s.cols == [[8, None, None, 4, None, None, None, None, None],
                         [7, 1, 4, None, 9, 5, 2, None, None],
                         [6, None, None, None, None, None, 9, 4, None],
                         [9, None, 3, None, 5, None, None, 6, None],
@@ -128,6 +142,8 @@ def test_simple_sudoku():
     assert s.possible_numbers(1, 0) == [2, 3, 5, 9]
     assert s.possible_numbers(7, 5) == [2, 8]
     assert s.possible_numbers(7, 1) == [8]
+
+    assert s.is_valid() == True
 
     print("Basic functionality passed")
 
