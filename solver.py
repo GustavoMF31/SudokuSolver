@@ -133,8 +133,6 @@ class SudokuBoard:
     def possible_numbers(self, y, x):
         #Returns wich numbers could occupy a specific tile
 
-        #Possible optimization:
-        #Cache the columns and the subgrids
         possible_numbers = []
 
         #Add to the list each number that is
